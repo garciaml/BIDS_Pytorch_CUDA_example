@@ -1,76 +1,40 @@
-## An example BIDS App (template repository)
+## An example BIDS App using Pytorch, CUDA and cuDNN for Deep Learning (template repository)
 Every BIDS App needs to follow a minimal set of command arguments common across
 all of the Apps. This allows users and developers to easily use and integrate
 BIDS Apps with their environment.
 
 This is a minimalist example of a BIDS App consisting of a Dockerfile and a simple
 entry point script (written in this case in Python) accepting the standard BIDS
-Apps command line arguments. This repository can be used as a template for new BIDS Apps.
+Apps command line arguments. This repository can be used as a template for new BIDS Apps **for Deep Learning applications**.
 
 For more information about the specification of BIDS Apps see [here](https://docs.google.com/document/d/1E1Wi5ONvOVVnGhj21S1bmJJ4kyHFT7tkxnV3C23sjIE/).
 
 ### Description
-This is a placeholder for a short description explaining to the user what your App will doing.
+This code can be used as a template to code a BIDS app for Deep Learning applications.
 
-### Documentation
-Provide a link to the documentation of your pipeline.
+Be sure your machine is equipped with an Nvidia graphics card compatible with CUDA and cuDNN.
+
+**First,** you will have to install the **Nvidia container toolkit** by following these instructions:
+- Linux system: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
+- Windows system: use WSL 2 : https://developer.nvidia.com/cuda/wsl https://docs.nvidia.com/cuda/wsl-user-guide/index.html#known-limitations-for-linux-cuda-apps Limitations: With the NVIDIA Container Toolkit for Docker 19.03, only --gpus all is supported. On multi-GPU systems it is not possible to filter for specific GPU devices by using specific index numbers to enumerate GPUs.
+
+This template uses CUDA 11.1 and cuDNN 8. Be sure it is compatible with your machine and the packages and dependencies you use.
+
+Otherwise, you may want to change the base in the Dockerfile by [another version](https://hub.docker.com/r/nvidia/cuda/tags?page=1).
+
+You may want to change the package versions in the requirements.txt file too.
+
+Next, try to run :
+```
+docker run -it --rm --gpus all -v /path/to/BIDS_data/:/data:ro -v /path/to/outdir/:/outdir garciaml/bids-pytorch-cuda /data /outdir participant
+```
+
+This should return **True**, showing that CUDA is available in the Docker container you launched. 
+
+If it returns False, verify that you  put the *--gpus* flag when launching the command.
+You can also verify that your installation of the Nvidia container toolkit is well done (see the official doc for [GPU](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) or [CPU](https://docs.nvidia.com/cuda/wsl-user-guide/index.html#ch01-introduction)), and that you chose compatible base and dependencies.
 
 ### How to report errors
-Provide instructions for users on how to get help and report errors.
+You can directly raise issues with the code here: https://github.com/garciaml/BIDS_Pytorch_CUDA_example/issues
+For any question or suggestion you are welcome to use the [bids-pytorch-cuda google group](https://groups.google.com/g/bids-pytorch-cuda).
 
-### Acknowledgments
-Describe how would you would like users to acknowledge use of your App in their papers (citation, a paragraph that can be copy pasted, etc.)
-
-### Usage
-This App has the following command line arguments:
-
-		usage: run.py [-h]
-		              [--participant_label PARTICIPANT_LABEL [PARTICIPANT_LABEL ...]]
-		              bids_dir output_dir {participant,group}
-
-		Example BIDS App entry point script.
-
-		positional arguments:
-		  bids_dir              The directory with the input dataset formatted
-		                        according to the BIDS standard.
-		  output_dir            The directory where the output files should be stored.
-		                        If you are running a group level analysis, this folder
-		                        should be prepopulated with the results of
-		                        the participant level analysis.
-		  {participant,group}   Level of the analysis that will be performed. Multiple
-		                        participant level analyses can be run independently
-		                        (in parallel).
-
-		optional arguments:
-		  -h, --help            show this help message and exit
-		  --participant_label PARTICIPANT_LABEL [PARTICIPANT_LABEL ...]
-		                        The label(s) of the participant(s) that should be
-		                        analyzed. The label corresponds to
-		                        sub-<participant_label> from the BIDS spec (so it does
-		                        not include "sub-"). If this parameter is not provided
-		                        all subjects will be analyzed. Multiple participants
-		                        can be specified with a space separated list.
-
-To run it in participant level mode (for one participant):
-
-    docker run -i --rm \
-		-v /Users/filo/data/ds005:/bids_dataset:ro \
-		-v /Users/filo/outputs:/outputs \
-		bids/example \
-		/bids_dataset /outputs participant --participant_label 01
-
-After doing this for all subjects (potentially in parallel), the group level analysis
-can be run:
-
-    docker run -i --rm \
-		-v /Users/filo/data/ds005:/bids_dataset:ro \
-		-v /Users/filo/outputs:/outputs \
-		bids/example \
-		/bids_dataset /outputs group
-
-### Special considerations
-Describe whether your app has any special requirements. For example:
-
-- Multiple map reduce steps (participant, group, participant2, group2 etc.)
-- Unusual memory requirements
-- etc.
