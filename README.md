@@ -14,7 +14,7 @@ This code can be used as a template to code a BIDS app for Deep Learning applica
 
 Be sure your machine is equipped with an Nvidia graphics card compatible with CUDA and cuDNN.
 
-**First,** you will have to install the **Nvidia container toolkit** by following these instructions:
+**First,** you will have to install [Docker](https://docs.docker.com/get-docker/) and the **Nvidia container toolkit** by following these instructions:
 - Linux system: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
 - Windows system: use WSL 2 : https://developer.nvidia.com/cuda/wsl https://docs.nvidia.com/cuda/wsl-user-guide/index.html#known-limitations-for-linux-cuda-apps Limitations: With the NVIDIA Container Toolkit for Docker 19.03, only --gpus all is supported. On multi-GPU systems it is not possible to filter for specific GPU devices by using specific index numbers to enumerate GPUs.
 
