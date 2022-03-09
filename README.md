@@ -38,3 +38,7 @@ You can also verify that your installation of the Nvidia container toolkit is we
 You can directly raise issues with the code here: https://github.com/garciaml/BIDS_Pytorch_CUDA_example/issues
 For any question or suggestion you are welcome to use the [bids-pytorch-cuda google group](https://groups.google.com/g/bids-pytorch-cuda).
 
+### Citation
+The BIDS-Pytorch-CUDA template was inpired from the version of BrainQCNet for GPU https://github.com/garciaml/BrainQCNet_GPU.
+
+When using the BIDS-Pytorch-CUDA template, please include the following citation:
