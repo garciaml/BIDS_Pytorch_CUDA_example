@@ -5,6 +5,7 @@ import subprocess
 import nibabel
 import numpy
 from glob import glob
+import torch
 
 __version__ = open(os.path.join(os.path.dirname(os.path.realpath(__file__)),
                                 'version')).read()
@@ -41,16 +42,16 @@ parser.add_argument('--participant_label', help='The label(s) of the participant
                    'provided all subjects should be analyzed. Multiple '
                    'participants can be specified with a space separated list.',
                    nargs="+")
-parser.add_argument('--skip_bids_validator', help='Whether or not to perform BIDS dataset validation',
-                   action='store_true')
+#parser.add_argument('--skip_bids_validator', help='Whether or not to perform BIDS dataset validation',
+#                   action='store_true')
 parser.add_argument('-v', '--version', action='version',
                     version='BIDS-App example version {}'.format(__version__))
 
 
 args = parser.parse_args()
 
-if not args.skip_bids_validator:
-    run('bids-validator %s'%args.bids_dir)
+#if not args.skip_bids_validator:
+#    run('bids-validator %s'%args.bids_dir)
 
 subjects_to_analyze = []
 # only for a subset of subjects
@@ -63,24 +64,7 @@ else:
 
 # running participant level
 if args.analysis_level == "participant":
-
-    # find all T1s and skullstrip them
-    for subject_label in subjects_to_analyze:
-        for T1_file in glob(os.path.join(args.bids_dir, "sub-%s"%subject_label,
-                                         "anat", "*_T1w.nii*")) + glob(os.path.join(args.bids_dir,"sub-%s"%subject_label,"ses-*","anat", "*_T1w.nii*")):
-            out_file = os.path.split(T1_file)[-1].replace("_T1w.", "_brain.")
-            cmd = "bet %s %s"%(T1_file, os.path.join(args.output_dir, out_file))
-            print(cmd)
-            run(cmd)
-
+    print(torch.cuda.is_available())
 # running group level
 elif args.analysis_level == "group":
-    brain_sizes = []
-    for subject_label in subjects_to_analyze:
-        for brain_file in glob(os.path.join(args.output_dir, "sub-%s*.nii*"%subject_label)):
-            data = nibabel.load(brain_file).get_data()
-            # calcualte average mask size in voxels
-            brain_sizes.append((data != 0).sum())
-
-    with open(os.path.join(args.output_dir, "avg_brain_size.txt"), 'w') as fp:
-        fp.write("Average brain size is %g voxels"%numpy.array(brain_sizes).mean())
+    print("group")
