@@ -42,3 +42,4 @@ For any question or suggestion you are welcome to use the [bids-pytorch-cuda goo
 The BIDS-Pytorch-CUDA template was inpired from the version of BrainQCNet for GPU https://github.com/garciaml/BrainQCNet_GPU.
 
 When using the BIDS-Pytorch-CUDA template, please include the following citation:
+*BrainQCNet: a Deep Learning attention-based model for multi-scale detection of artifacts in brain structural MRI scans*, Melanie Garcia, Nico Dosenbach, Clare Kelly. bioRxiv 2022.03.11.483983; doi: https://doi.org/10.1101/2022.03.11.483983
